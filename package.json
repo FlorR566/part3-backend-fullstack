@@ -1,0 +1,27 @@
+{
+	"name": "part3-backend-fullstack",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index.js",
+		"dev": "nodemon index.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/FlorR566/part3-backend-fullstack.git"
+	},
+	"author": "Florencia Rodriguez",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/FlorR566/part3-backend-fullstack/issues"
+	},
+	"homepage": "https://github.com/FlorR566/part3-backend-fullstack#readme",
+	"description": "",
+	"dependencies": {
+		"express": "^5.2.1"
+	},
+	"devDependencies": {
+		"nodemon": "^3.1.11"
+	}
+}
