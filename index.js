@@ -3,6 +3,8 @@ const app = express();
 
 app.use(express.json());
 
+const currDate = new Date();
+
 let persons = [
 	{
 		id: 1,
@@ -31,7 +33,10 @@ app.get("/", (request, response) => {
 });
 
 app.get("/info", (request, response) => {
-	response.send(`<p>Phonebook has info for ${persons.length} books</p>`);
+	response.send(
+		`<p>Phonebook has info for ${persons.length} peoples</p>
+		<p>${currDate}</p>`
+	);
 });
 
 app.get("/api/persons", (request, response) => {
