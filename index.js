@@ -54,30 +54,30 @@ app.get("/api/persons/:id", (request, response) => {
 	}
 });
 
-// const generateId = () => {
-// 	const maxId = persons.length > 0 ? Math.max(...persons.map((n) => n.id)) : 0;
-// 	return maxId + 1;
-// };
+const generateId = () => {
+	const maxId = persons.length > 0 ? Math.max(...persons.map((n) => n.id)) : 0;
+	return maxId + 1;
+};
 
-// app.post("/api/persons", (request, response) => {
-// 	const body = request.body;
+app.post("/api/persons", (request, response) => {
+	const body = request.body;
 
-// 	if (!body.content) {
-// 		return response.status(400).json({
-// 			error: "content missing",
-// 		});
-// 	}
+	// const missing = !body.name ? "name" : !body.number ? "number" : null;
 
-// 	const person = {
-// 		content: body.content,
-// 		important: Boolean(body.important) || false,
-// 		id: generateId(),
-// 	};
+	// if (missing) {
+	// 	return response.status(404).json({ error: `${missing} missing` });
+	// }
 
-// 	persons = persons.concat(person);
+	const person = {
+		name: body.name,
+		number: body.number,
+		id: generateId(),
+	};
 
-// 	response.json(person);
-// });
+	persons = persons.concat(person);
+
+	response.json(person);
+});
 
 app.delete("/api/persons/:id", (request, response) => {
 	const id = Number(request.params.id);
