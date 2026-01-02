@@ -1,8 +1,6 @@
 const express = require("express");
 const app = express();
 
-app.use(express.json());
-
 const currDate = new Date();
 
 let persons = [
@@ -27,6 +25,17 @@ let persons = [
 		number: "39-23-6423122",
 	},
 ];
+
+const requestLogger = (request, response, next) => {
+	console.log("Method: ", request.method);
+	console.log("Path: ", request.path);
+	console.log("Body: ", request.body);
+	console.log("---");
+	next();
+};
+
+app.use(express.json());
+app.use(requestLogger);
 
 app.get("/", (request, response) => {
 	response.send("<h1>Hello World!</h1>");
@@ -54,37 +63,11 @@ app.get("/api/persons/:id", (request, response) => {
 	}
 });
 
-const generateId = () => {
-	const maxId = persons.length > 0 ? Math.max(...persons.map((n) => n.id)) : 0;
-	return maxId + 1;
+const unknownEndpoint = (request, response) => {
+	response.status(404).send({ error: "unknown endpoint" });
 };
 
-app.post("/api/persons", (request, response) => {
-	const body = request.body;
-
-	if (!body.content) {
-		return response.status(400).json({
-			error: "content missing",
-		});
-	}
-
-	const person = {
-		content: body.content,
-		important: Boolean(body.important) || false,
-		id: generateId(),
-	};
-
-	persons = persons.concat(person);
-
-	response.json(person);
-});
-
-app.delete("/api/persons/:id", (request, response) => {
-	const id = Number(request.params.id);
-	persons = persons.filter((person) => person.id !== id);
-
-	response.status(204).end();
-});
+app.use(unknownEndpoint);
 
 const PORT = 3001;
 app.listen(PORT, () => {
