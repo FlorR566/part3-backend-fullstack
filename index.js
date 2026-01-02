@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+var morgan = require("morgan");
 
 const currDate = new Date();
 
@@ -26,16 +27,17 @@ let persons = [
 	},
 ];
 
-const requestLogger = (request, response, next) => {
-	console.log("Method: ", request.method);
-	console.log("Path: ", request.path);
-	console.log("Body: ", request.body);
-	console.log("---");
-	next();
-};
+// const requestLogger = (request, response, next) => {
+// 	console.log("Method: ", request.method);
+// 	console.log("Path: ", request.path);
+// 	console.log("Body: ", request.body);
+// 	console.log("---");
+// 	next();
+// };
 
 app.use(express.json());
-app.use(requestLogger);
+app.use(morgan("tiny"));
+// app.use(requestLogger);
 
 app.get("/", (request, response) => {
 	response.send("<h1>Hello World!</h1>");
