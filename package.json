@@ -19,6 +19,7 @@
 	"homepage": "https://github.com/FlorR566/part3-backend-fullstack#readme",
 	"description": "",
 	"dependencies": {
+		"cors": "^2.8.5",
 		"express": "^5.2.1"
 	},
 	"devDependencies": {
