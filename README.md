@@ -1,6 +1,15 @@
 # Phonebook / Notes Backend – Full Stack Open (Part 3)
 
-This repository contains the backend exercises developed from **Part 3** of the **Full Stack Open** course by the University of Helsinki.  
+Live demo (notes backend):
+[View project on Render](https://part3-backend-fullstack.onrender.com/)
+
+Live demo (phonebook backend):
+[View project on Render](https://part3-phonebook-backend-hle2.onrender.com/)
+
+##
+
+The `main` branch contains the backend exercises for [Notes](https://part3-backend-fullstack.onrender.com/) from **Part 3** of the **Full Stack Open** course by the University of Helsinki.  
+The `3.9` branch contains the backend for the [Phonebook](https://part3-phonebook-backend-hle2.onrender.com/) exercise.  
 Each exercise and development step is stored in a **separate Git branch**, allowing the evolution of the application to be followed incrementally.
 
 The backend implements a **RESTful HTTP API** using **Node.js** and **Express**, and is designed to work together with the frontend developed in Part 2 of the course.
@@ -55,9 +64,9 @@ You can run any version of the application locally by following these steps.
 
 Example:
 
-    ```bash
-    git switch part3-1
-    ```
+```bash
+git switch part3-1
+```
 
 4. Install dependencies:
 
@@ -89,8 +98,8 @@ Switching branches updates your working directory to reflect the code state of t
 
 Because new dependencies are added as the course progresses, it is recommended to run:
 
-    ```bash
-    npm install
-    ```
+```bash
+npm install
+```
 
 after switching branches to ensure all required packages are installed.
