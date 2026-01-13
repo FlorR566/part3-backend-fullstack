@@ -27,14 +27,25 @@ const personSchema = new mongoose.Schema({
 // Crear el modelo (clase que representa una colección)
 const Person = mongoose.model("Person", personSchema);
 
-//Crear objetos
-const person = new Person({
-	name: name,
-	phone: phone,
-});
+if (process.argv.length === 3) {
+	// Obtener objetos de la DB
+	Person.find({}).then((result) => {
+		console.log("Phonebook:");
+		result.forEach((person) => {
+			console.log(`${person.name} ${person.phone}`);
+		});
+		mongoose.connection.close();
+	});
+} else {
+	//Crear objetos
+	const person = new Person({
+		name: name,
+		phone: phone,
+	});
 
-// Guardar objetos en la base
-person.save().then((result) => {
-	console.log(`Added ${name} number ${phone} to phonebook!`);
-	mongoose.connection.close();
-});
+	// Guardar objetos en la base
+	person.save().then((result) => {
+		console.log(`Added ${name} number ${phone} to phonebook!`);
+		mongoose.connection.close();
+	});
+}
