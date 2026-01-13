@@ -1,25 +1,18 @@
-// Importar Mongoose
 const mongoose = require("mongoose");
 
-// Forma simple y segura de no hardcodear credenciales
 if (process.argv.length < 3) {
 	console.log("give password as argument");
 	process.exit(1);
 }
 
-// Obtener la password
 const password = process.argv[2];
 
-// Obtener name
 const name = process.argv[3];
 
-// obtener phone
 const phone = process.argv[4];
 
-// URI de conexión a MongoDB Atlas
 const url = `mongodb+srv://fullstack:${password}@cluster0.sminnmi.mongodb.net/phonebookApp?retryWrites=true&w=majority`;
 
-// Configuración de Mongoose
 mongoose.set("strictQuery", false);
 
 // Conexión a la base
