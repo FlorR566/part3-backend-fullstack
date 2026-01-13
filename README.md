@@ -1,102 +1,88 @@
-# Phonebook Backend – Full Stack Open (Part 3)
+# Part 3.12 – Phonebook with MongoDB (Full Stack Open)
 
-### Live Demo
+## Exercise goal
 
-[View project on Render](https://part3-phonebook-backend-hle2.onrender.com/)
+In this exercise, the Phonebook application is migrated so that data is no longer stored in memory, but in **MongoDB**, using **MongoDB** **Atlas** and **Mongoose**.
 
-##
+The main goals are:
 
-This repository contains the backend exercises from **3.9 to 3.11** of **Part 3** in the **Full Stack Open** course by the University of Helsinki.  
-Previous exercises and development steps are stored in a **separate Git branch**, allowing the evolution of the application to be followed incrementally.
+<ul>
+   <li>
+   Use a dedicated database for the Phonebook application.
+   </li>
+   <li>
+   Connect a Node.js application to MongoDB Atlas.
+   </li>
+   <li>
+   Define a schema and a model using Mongoose.
+   </li>
+   <li>
+   Store and retrieve data from MongoDB.
+   </li>
+</ul>
 
-The backend implements a **RESTful HTTP API** using **Node.js** and **Express**, and is designed to work together with the frontend developed in Part 2 of the course.
+## Conecting to MongoDB Atlas
 
-Depending on the branch, the application manages either notes or phonebook entries, gradually introducing concepts such as routing, middleware, error handling, environment variables, and database integration.
+The conection is done using a MongoDB Atlas connection URI, explicitly defining the database name:
 
----
-
-## Technologies
-
-- Node.js
-- Express
-- JavaScript
-- RESTful APIs
-
-Later branches may also include:
-
-- MongoDB
-- Mongoose
-- dotenv
-
----
-
-## Running the application locally
-
-You can run any version of the application locally by following these steps.
-
-### Prerequisites
-
-- Node.js (recommended major version: **22** or compatible)
-
-### Steps
-
-1. Clone this repository:
-
-   ```bash
-   git clone https://github.com/FlorR566/part3-backend-fullstack
-   ```
-
-2. Navigate into the project directory:
-
-   ```bash
-   cd part3-backend-fullstack
-
-   ```
-
-3. Switch to the branch corresponding to the exercise you want to run:
-
-   ```bash
-   git switch part-3.1
-   ```
-
-Example:
-
-```bash
-git switch part3-1
+```
+mongodb+srv://fullstack:<password>@cluster0.sminnmi.mongodb.net/phonebookApp?retryWrites=true&w=majority
 ```
 
-4. Install dependencies:
+###
 
-   ```bash
-   npm install
-   ```
+`fullstack` : database user
 
-5. If the selected branch requires environment variables (for example, MongoDB integration), create a .env file in the project root:
+`<password>` : password passed via the terminal or environment variables
 
-   ```bash
-   MONGODB_URI=your_database_connection_string
-   PORT=3001
-   ```
+`phonebookApp` : database used by the application
 
-6. Start the application:
+## Schema (Mongoose)
 
-   ```bash
-   npm run dev
-   ```
+The schema defines the structure of the documents in the `persons` collection:
 
-### By default, the server runs on:
-
-http://localhost:3001
-
-### Branch-based workflow
-
-Each branch represents a specific stage or exercise of the course.
-Switching branches updates your working directory to reflect the code state of that exercise.
-
-Because new dependencies are added as the course progresses, it is recommended to run:
-
-```bash
-npm install
+```
+   const personSchema = new mongoose.Schema({
+      name: String,
+      number: String,
+   });
 ```
 
-after switching branches to ensure all required packages are installed.
+## Model
+
+The model is used to interact with collection from the aplication code:
+
+```
+const Person = mongoose.model('Person', personSchema);
+```
+
+Using the model, it is possible to:
+
+<ul>
+   <li>
+   Create new documents
+   </li>
+   <li>
+   Save data to MongoDB
+   </li>
+   <li>
+   Query existing fata
+   </li>
+   <li>
+   Delete documents
+   </li>
+</ul>
+
+## Testing with scripts
+
+Before integrating MongoDB into the Express backend, a separate script can be used to:
+
+1. Connect to the phonebookApp database.
+
+2. Create a test document.
+
+3. Save it to the persons collection.
+
+4. Close the database connection.
+
+This approach helps verify that the MongoDB connection and the Mongoose model work correctly before moving on.
