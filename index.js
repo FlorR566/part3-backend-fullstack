@@ -2,6 +2,23 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 
+// const mongoose = require("mongoose");
+
+// const password = process.argv;
+
+// // DO NOT SAVE YOUR PASSWORD TO GITHUB
+// const url = `mongodb+srv://fullstack:${password}@cluster0.sminnmi.mongodb.net/noteApp?retryWrites=true&w=majority`;
+
+// mongoose.set("strictQuery", false);
+// mongoose.connect(url);
+
+// const noteSchema = new mongoose.Schema({
+// 	content: String,
+// 	important: Boolean,
+// });
+
+// const Note = mongoose.model("Note, noteSchema");
+
 let notes = [
 	{
 		id: 1,
@@ -39,6 +56,10 @@ app.get("/", (request, response) => {
 
 app.get("/api/notes", (request, response) => {
 	response.json(notes);
+
+	// Note.find({}).then((notes) => {
+	// 	response.json(notes);
+	// });
 });
 
 app.get("/api/notes/:id", (request, response) => {
