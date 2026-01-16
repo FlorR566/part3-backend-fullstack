@@ -1,5 +1,4 @@
 require("dotenv").config();
-console.log("*".repeat(60), process.env); // remove this after you've confirmed it is working
 
 const express = require("express");
 const app = express();
