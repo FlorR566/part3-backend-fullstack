@@ -6,28 +6,7 @@ const app = express();
 const Person = require("./models/person");
 const cors = require("cors");
 
-let persons = [
-	{
-		id: 1,
-		name: "Arto Hellas",
-		phone: "040-123456",
-	},
-	{
-		id: 2,
-		name: "Ada Lovelace",
-		phone: "39-44-5323523",
-	},
-	{
-		id: 3,
-		name: "Dan Abramov",
-		phone: "12-43-234345",
-	},
-	{
-		id: 4,
-		name: "Mary Poppendieck",
-		phone: "39-23-6423122",
-	},
-];
+let persons = [];
 
 app.use(cors());
 app.use(express.json());
@@ -55,13 +34,13 @@ app.get("/", (request, response) => {
 	response.send("<h1>Hello World!</h1>");
 });
 
-app.get("/info", (request, response) => {
-	const currDate = new Date();
-	response.send(
-		`<p>Phonebook has info for ${persons.length} peoples</p>
-		<p>${currDate}</p>`
-	);
-});
+// app.get("/info", (request, response) => {
+// 	const currDate = new Date();
+// 	response.send(
+// 		`<p>Phonebook has info for ${persons.length} peoples</p>
+// 		<p>${currDate}</p>`
+// 	);
+// });
 
 app.get("/api/persons", (request, response) => {
 	Person.find({}).then((persons) => {
