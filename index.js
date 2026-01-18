@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
+const Person = require("./models/person");
 const cors = require("cors");
 
 let persons = [
@@ -63,57 +64,58 @@ app.get("/info", (request, response) => {
 });
 
 app.get("/api/persons", (request, response) => {
-	response.json(persons);
+	Person.find({}).then((persons) => {
+		response.json(persons);
+	});
 });
 
 app.get("/api/persons/:id", (request, response) => {
-	const id = Number(request.params.id);
-	const person = persons.find((person) => person.id === id);
-
-	if (person) {
-		response.json(person);
-	} else {
-		response.status(404).end();
-	}
+	Person.findById(request.params.id).then((person) => {
+		if (person) {
+			response.json(person);
+		} else {
+			response.status(404).end();
+		}
+	});
 });
 
-const generateId = () => {
-	const maxId = persons.length > 0 ? Math.max(...persons.map((n) => n.id)) : 0;
-	return maxId + 1;
-};
+// const generateId = () => {
+// 	const maxId = persons.length > 0 ? Math.max(...persons.map((n) => n.id)) : 0;
+// 	return maxId + 1;
+// };
 
-app.post("/api/persons", (request, response) => {
-	const body = request.body;
+// app.post("/api/persons", (request, response) => {
+// 	const body = request.body;
 
-	const missing = !body.name ? "name" : !body.phone ? "phone" : null;
+// 	const missing = !body.name ? "name" : !body.phone ? "phone" : null;
 
-	if (missing) {
-		return response.status(404).json({ error: `${missing} missing` });
-	}
+// 	if (missing) {
+// 		return response.status(404).json({ error: `${missing} missing` });
+// 	}
 
-	const existName = persons.some((p) => p.name === body.name);
+// 	const existName = persons.some((p) => p.name === body.name);
 
-	if (existName) {
-		return response.status(404).json({ error: "Name must be unique." });
-	}
+// 	if (existName) {
+// 		return response.status(404).json({ error: "Name must be unique." });
+// 	}
 
-	const person = {
-		name: body.name,
-		phone: body.phone,
-		id: generateId(),
-	};
+// 	const person = {
+// 		name: body.name,
+// 		phone: body.phone,
+// 		id: generateId(),
+// 	};
 
-	persons = persons.concat(person);
+// 	persons = persons.concat(person);
 
-	response.json(person);
-});
+// 	response.json(person);
+// });
 
-app.delete("/api/persons/:id", (request, response) => {
-	const id = Number(request.params.id);
-	persons = persons.filter((person) => person.id !== id);
+// app.delete("/api/persons/:id", (request, response) => {
+// 	const id = Number(request.params.id);
+// 	persons = persons.filter((person) => person.id !== id);
 
-	response.status(204).end();
-});
+// 	response.status(204).end();
+// });
 
 const unknownEndpoint = (request, response) => {
 	response.status(404).send({ error: "unknown endpoint" });
