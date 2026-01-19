@@ -23,7 +23,7 @@ app.use(
 			"ms",
 			tokens.method(req, res) == "POST" ? tokens.body(req, res) : null,
 		].join(" ");
-	})
+	}),
 );
 
 morgan.token("body", function input(req, res) {
@@ -53,41 +53,29 @@ app.get("/api/persons/:id", (request, response) => {
 		if (person) {
 			response.json(person);
 		} else {
-			response.status(404).end();
+			response.status(400).end();
 		}
 	});
 });
 
-// const generateId = () => {
-// 	const maxId = persons.length > 0 ? Math.max(...persons.map((n) => n.id)) : 0;
-// 	return maxId + 1;
-// };
+app.post("/api/persons", (request, response) => {
+	const body = request.body;
 
-// app.post("/api/persons", (request, response) => {
-// 	const body = request.body;
+	const missing = !body.name ? "name" : !body.phone ? "phone" : null;
 
-// 	const missing = !body.name ? "name" : !body.phone ? "phone" : null;
+	if (missing) {
+		return response.status(404).json({ error: `${missing} missing` });
+	}
 
-// 	if (missing) {
-// 		return response.status(404).json({ error: `${missing} missing` });
-// 	}
+	const person = new Person({
+		name: body.name,
+		phone: body.phone,
+	});
 
-// 	const existName = persons.some((p) => p.name === body.name);
-
-// 	if (existName) {
-// 		return response.status(404).json({ error: "Name must be unique." });
-// 	}
-
-// 	const person = {
-// 		name: body.name,
-// 		phone: body.phone,
-// 		id: generateId(),
-// 	};
-
-// 	persons = persons.concat(person);
-
-// 	response.json(person);
-// });
+	person.save().then((savedPerson) => {
+		response.json(savedPerson);
+	});
+});
 
 // app.delete("/api/persons/:id", (request, response) => {
 // 	const id = Number(request.params.id);
