@@ -31,7 +31,7 @@ app.get("/api/notes", (request, response) => {
 	});
 });
 
-app.get("/api/notes/:id", (request, response) => {
+app.get("/api/notes/:id", (request, response, next) => {
 	Note.findById(request.params.id)
 		.then((note) => {
 			if (note) {
@@ -40,10 +40,7 @@ app.get("/api/notes/:id", (request, response) => {
 				response.status(404).end();
 			}
 		})
-		.catch((error) => {
-			console.log(error);
-			response.status(400).send({ error: "malformatted id" });
-		});
+		.catch((error) => next(error));
 });
 
 app.post("/api/notes", (request, response) => {
@@ -82,3 +79,14 @@ const PORT = process.env.PORT;
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`);
 });
+
+const errorHandler = (error, request, response, next) => {
+	console.log(error.message);
+
+	if (error.name === "CastError") {
+		return response.status(400).send({ error: "maldormatted id" });
+		next(error);
+	}
+};
+// este debe ser el último middleware cargado, ¡también todas las rutas deben ser registradas antes que esto!
+app.use(errorHandler);
