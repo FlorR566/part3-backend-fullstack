@@ -2,31 +2,40 @@
 
 ## Exercise goal
 
-In this exercise, the Phonebook application is refactored to fully integrate **MongoDB** into the Express backend.
-The main focus is moving database logic into its **own module** and managing sensitive information securely using **environment variables**.
+In this exercise, the backend is expanded to support **data persistence** when creating new entries.
+The applicaction no longer relies on local momory; instead, every new person added via the frontend is stores permanently in **MongoDB Atlas**.
 
 The main goals are:
 
 <ul> 
    <li>
-   Move the database configuration and the Mongoose model into a separate <b>module</b>.
+   Implement the <b>POST</b> route to save new entries to the database.
    </li> 
    <li>
-   Use <b>environment variables</b> (<code>dotenv</code>) to store sensitive information like the connection URI.
+   Handle asynchronous operations using Mongoose <b>Promises </b> (<code>.then()</code>).
    </li>
    <li>
-   Configure the backend to serve data directly from MongoDB Atlas to the frontend.</li>
+   Ensure that data us correctly validated on the server side before being saved.</li>
    <li>
-   Format the database response (<code>toJSON</code>) to match the frontend's requirements.
+   Verify that new entries persist even after restarting the backend server.
    </li> 
 </ul>
 
-## Environment Variables (.env)
+## Implementation Details
 
-The avoid hardcoding credentials in the code, a `.env` file is used. This file is included in .gitignore to keep it out of version control.
+When a `POST` request is received at /api/persons, the server creates a new instance of the `Person` model and saves it:
 
 ```
-MONGODB_URI=mongodb+srv://fullstack:<password>@cluster0.sminnmi.mongodb.net/phonebookApp?retryWrites=true&w=majority
+const person = new Person({
+  name: body.name,
+  phone: body.phone,
+});
 
-PORT=3001
+person.save().then(savedPerson => {
+  response.json(savedPerson);
+});
 ```
+
+## Server-side Validation
+
+Basic validation was implemented to prevent saving incomplete data. If the `name` or `phone` fields are missing, the server with a `400 Bad Request` status code.
