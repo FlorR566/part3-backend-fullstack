@@ -1,12 +1,10 @@
 require("dotenv").config();
 
 const express = require("express");
-const app = express();
 // Importamos el módulo
 const Note = require("./models/note");
+const app = express();
 const cors = require("cors");
-
-let notes = [];
 
 const requestLogger = (request, response, next) => {
 	console.log("Method: ", request.method);
@@ -14,6 +12,16 @@ const requestLogger = (request, response, next) => {
 	console.log("Body: ", request.body);
 	console.log("---");
 	next();
+};
+
+const errorHandler = (error, request, response, next) => {
+	console.log(error.message);
+
+	if (error.name === "CastError") {
+		return response.status(400).send({ error: "malformatted id" });
+	}
+
+	next(error);
 };
 
 app.use(cors());
@@ -77,12 +85,12 @@ app.put("/api/notes/:id", (request, response, next) => {
 		.catch((error) => next(error));
 });
 
-app.delete("/api/notes/:id", (request, response) => {
-	const id = Number(request.params.id);
-	notes = notes.filter((note) => note.id !== id);
+// app.delete("/api/notes/:id", (request, response) => {
+// 	const id = Number(request.params.id);
+// 	notes = notes.filter((note) => note.id !== id);
 
-	response.status(204).end();
-});
+// 	response.status(204).end();
+// });
 
 const unknownEndpoint = (request, response) => {
 	response.status(404).send({ error: "unknown endpoint" });
@@ -90,22 +98,11 @@ const unknownEndpoint = (request, response) => {
 
 // controlador de solicitudes con endpoint desconocido
 app.use(unknownEndpoint);
+// controlador de solicitudes que resulten en errores
+// este debe ser el último middleware cargado, ¡también todas las rutas deben ser registradas antes que esto!
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`);
 });
-
-const errorHandler = (error, request, response, next) => {
-	console.log(error.message);
-
-	if (error.name === "CastError") {
-		return response.status(400).send({ error: "malformatted id" });
-	}
-
-	next(error);
-};
-
-// controlador de solicitudes que resulten en errores
-// este debe ser el último middleware cargado, ¡también todas las rutas deben ser registradas antes que esto!
-app.use(errorHandler);
