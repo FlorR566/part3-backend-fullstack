@@ -1,10 +1,10 @@
 # Phonebook / Notes Backend – Full Stack Open (Part 3)
 
-Live demo (notes backend):
-[View project on Render](https://part3-backend-fullstack.onrender.com/)
-
 Live demo (phonebook backend):
 [View project on Render](https://part3-phonebook-backend-hle2.onrender.com/)
+
+Live demo (notes backend):
+[View project on Render](https://part3-backend-fullstack.onrender.com/)
 
 ##
 
@@ -24,12 +24,25 @@ Depending on the branch, the application manages either notes or phonebook entri
 - Express
 - JavaScript
 - RESTful APIs
+- Postman (API Testing & Debugging)
 
 Later branches may also include:
 
 - MongoDB
 - Mongoose
 - dotenv
+
+---
+
+## API Testing
+
+Throughout the development of both the **Notes** and **Phonebook** backends, **Postman** was used as the primary tool for testing and debugging the REST API endpoints.
+
+### Key testing workflows included:
+
+- **Endpoint Validation:** Verifying `GET`, `POST`, `PUT`, and `DELETE` requests to ensure correct status codes (e.g., `200 OK`, `201 Created`, `204 No Content`).
+- **Error Handling:** Testing edge cases such as malformed IDs, missing required fields, or non-existent resources to verify that the centralized **Error Handler Middleware** returns the appropriate `400 Bad Request` or `404 Not Found` responses.
+- **Environment Management:** Using Postman environments to easily switch between `localhost` and the live `Render` deployment for quick verification.
 
 ---
 
@@ -53,7 +66,6 @@ You can run any version of the application locally by following these steps.
 
    ```bash
    cd part3-backend-fullstack
-
    ```
 
 3. Switch to the branch corresponding to the exercise you want to run:
@@ -65,7 +77,7 @@ You can run any version of the application locally by following these steps.
 Example:
 
 ```bash
-git switch part3-1
+ git switch part3-1
 ```
 
 4. Install dependencies:
@@ -77,14 +89,14 @@ git switch part3-1
 5. If the selected branch requires environment variables (for example, MongoDB integration), create a .env file in the project root:
 
    ```bash
-   MONGODB_URI=your_database_connection_string
-   PORT=3001
+    MONGODB_URI=your_database_connection_string
+    PORT=3001
    ```
 
 6. Start the application:
 
    ```bash
-   npm run dev
+    npm run dev
    ```
 
 ### By default, the server runs on:
@@ -99,7 +111,7 @@ Switching branches updates your working directory to reflect the code state of t
 Because new dependencies are added as the course progresses, it is recommended to run:
 
 ```bash
-npm install
+ npm install
 ```
 
 after switching branches to ensure all required packages are installed.
