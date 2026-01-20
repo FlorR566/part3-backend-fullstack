@@ -1,16 +1,16 @@
-require("dotenv").config();
+require("dotenv").config(); // 1. siempre arriba de todo (configuración de ambiente)
 
-const express = require("express");
+const express = require("express"); // 2. librerías de terceros
 const morgan = require("morgan");
-const app = express();
-const Person = require("./models/person");
 const cors = require("cors");
 
-let persons = [];
+const Person = require("./models/person"); // 3. mis propios modelos
+
+const app = express(); // 4. la inicialización de la app
 
 app.use(cors());
-app.use(express.json());
 app.use(express.static("dist"));
+app.use(express.json());
 app.use(
 	morgan(function (tokens, req, res) {
 		return [
@@ -77,12 +77,13 @@ app.post("/api/persons", (request, response) => {
 	});
 });
 
-// app.delete("/api/persons/:id", (request, response) => {
-// 	const id = Number(request.params.id);
-// 	persons = persons.filter((person) => person.id !== id);
-
-// 	response.status(204).end();
-// });
+app.delete("/api/persons/:id", (request, response, next) => {
+	Person.findByIdAndDelete(request.params.id)
+		.then((result) => {
+			response.status(204).end();
+		})
+		.catch((error) => next(error));
+});
 
 const unknownEndpoint = (request, response) => {
 	response.status(404).send({ error: "unknown endpoint" });
