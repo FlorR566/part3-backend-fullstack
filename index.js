@@ -17,8 +17,8 @@ const requestLogger = (request, response, next) => {
 };
 
 app.use(cors());
-app.use(express.json());
 app.use(express.static("dist"));
+app.use(express.json());
 app.use(requestLogger);
 
 app.get("/", (request, response) => {
@@ -73,6 +73,7 @@ const unknownEndpoint = (request, response) => {
 	response.status(404).send({ error: "unknown endpoint" });
 };
 
+// controlador de solicitudes con endpoint desconocido
 app.use(unknownEndpoint);
 
 const PORT = process.env.PORT;
@@ -84,9 +85,12 @@ const errorHandler = (error, request, response, next) => {
 	console.log(error.message);
 
 	if (error.name === "CastError") {
-		return response.status(400).send({ error: "maldormatted id" });
-		next(error);
+		return response.status(400).send({ error: "malformatted id" });
 	}
+
+	next(error);
 };
+
+// controlador de solicitudes que resulten en errores
 // este debe ser el último middleware cargado, ¡también todas las rutas deben ser registradas antes que esto!
 app.use(errorHandler);
