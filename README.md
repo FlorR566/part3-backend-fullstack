@@ -1,47 +1,35 @@
-# Part 3.15 – Phonebook: Deleting entries from MongoDB
+# Part 3.16 – Phonebook: Centralized Error Handling
 
 ## Exercise goal
 
-In this exercise, the application's CRUD functionality is further expanded by implementing **persistent deletion**.
-Instead of filtering a local array, the backend now communicates with **MongoDB Atlas** to remove specific entries permanently.
+The goal of this exercise is to refactor the application by moving all error handling logic into a dedicated **middleware**.
+This improves code maintainability and ensures a consistent response format for different types of errors across all routes.
 
 The main goals are:
 
 <ul> 
    <li>
-   Implement the <b>DELETE</b> route using Mongoose's <code>findByIdAndDelete</code> method. 
+   Remove inline error handling from individual route handlers.
    </li> 
    <li>
-      Integrate centralized <b>error handling</b> to manage malformed IDs during deletion.
+      Implement a custom <b>error handler middleware</b> to manage specific errors like <code>CastError</code> (malformed IDs) or validation errors.
    </li>
    <li>
-   Verify API behavior and status codes using <b>Postman</b> before connecting the frontend.
+   Use the <code>next(error)</code> function to pass exceptions from promises to the centralized middleware. 
    </li> 
 </ul>
 
 ## Implementation Details
 
-When a `DELETE` request is sent to `/api/persons/:id`, the server uses the ID from the request parameters to find and remove the document.
-
-```
-app.delete('/api/persons/:id', (request, response, next) => {
-  Person.findByIdAndDelete(request.params.id)
-    .then(result => {
-      response.status(204).end();
-    })
-    .catch(error => next(error));
-});
-```
+The routes are now cleaner as they no longer need to define how to respond to an error. They simply "pass the ball" to the next middleware.
 
 ## Testing with Postman
 
-To ensure the backend works correctly before integrating it with the React frontend, I used **Postman** to simulate requests:
-
 <ul> 
    <li>
-   <b>Successful Deletion:</b> Verified that a valid ID returns a <code>204 No Content</code> status. 
+   <b>Postman:</b> Used Postman to trigger different error scenarios (like searching for a non-existent ID format) and verified that the server responds with the correct JSON error message and status code. 
    </li> 
    <li>
-      <b>Error Handling:</b> Tested with malformed IDs to ensure the <code>errorHandler</code> middleware catches the exception and returns a <code>404 Bad Request</code> with the message "malformatted id".
+      <b>Code Quality:</b> This refactor follows the "Don't Repeat Yourself" (DRY) principle, making the backend more robust and easier to scale as more models or routes are added. 
    </li>
 </ul>
