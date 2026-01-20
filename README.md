@@ -1,41 +1,47 @@
-# Part 3.14 – Phonebook integration with MongoDB (Full Stack Open)
+# Part 3.15 – Phonebook: Deleting entries from MongoDB
 
 ## Exercise goal
 
-In this exercise, the backend is expanded to support **data persistence** when creating new entries.
-The applicaction no longer relies on local momory; instead, every new person added via the frontend is stores permanently in **MongoDB Atlas**.
+In this exercise, the application's CRUD functionality is further expanded by implementing **persistent deletion**.
+Instead of filtering a local array, the backend now communicates with **MongoDB Atlas** to remove specific entries permanently.
 
 The main goals are:
 
 <ul> 
    <li>
-   Implement the <b>POST</b> route to save new entries to the database.
+   Implement the <b>DELETE</b> route using Mongoose's <code>findByIdAndDelete</code> method. 
    </li> 
    <li>
-   Handle asynchronous operations using Mongoose <b>Promises </b> (<code>.then()</code>).
+      Integrate centralized <b>error handling</b> to manage malformed IDs during deletion.
    </li>
    <li>
-   Ensure that data us correctly validated on the server side before being saved.</li>
-   <li>
-   Verify that new entries persist even after restarting the backend server.
+   Verify API behavior and status codes using <b>Postman</b> before connecting the frontend.
    </li> 
 </ul>
 
 ## Implementation Details
 
-When a `POST` request is received at /api/persons, the server creates a new instance of the `Person` model and saves it:
+When a `DELETE` request is sent to `/api/persons/:id`, the server uses the ID from the request parameters to find and remove the document.
 
 ```
-const person = new Person({
-  name: body.name,
-  phone: body.phone,
-});
-
-person.save().then(savedPerson => {
-  response.json(savedPerson);
+app.delete('/api/persons/:id', (request, response, next) => {
+  Person.findByIdAndDelete(request.params.id)
+    .then(result => {
+      response.status(204).end();
+    })
+    .catch(error => next(error));
 });
 ```
 
-## Server-side Validation
+## Testing with Postman
 
-Basic validation was implemented to prevent saving incomplete data. If the `name` or `phone` fields are missing, the server with a `400 Bad Request` status code.
+To ensure the backend works correctly before integrating it with the React frontend, I used **Postman** to simulate requests:
+
+<ul> 
+   <li>
+   <b>Successful Deletion:</b> Verified that a valid ID returns a <code>204 No Content</code> status. 
+   </li> 
+   <li>
+      <b>Error Handling:</b> Tested with malformed IDs to ensure the <code>errorHandler</code> middleware catches the exception and returns a <code>404 Bad Request</code> with the message "malformatted id".
+   </li>
+</ul>
