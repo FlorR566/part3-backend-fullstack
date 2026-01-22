@@ -44,13 +44,18 @@ app.get("/", (request, response) => {
 	response.send("<h1>Hello World!</h1>");
 });
 
-// app.get("/info", (request, response) => {
-// 	const currDate = new Date();
-// 	response.send(
-// 		`<p>Phonebook has info for ${persons.length} peoples</p>
-// 		<p>${currDate}</p>`
-// 	);
-// });
+app.get("/info", (request, response, next) => {
+	const currDate = new Date();
+
+	Person.countDocuments({}, { hint: "_id_" })
+		.then((totalPersons) => {
+			response.send(
+				`<p>Phonebook has info for ${totalPersons} persons</p>
+		<p>${currDate}</p>`,
+			);
+		})
+		.catch((error) => next(error));
+});
 
 app.get("/api/persons", (request, response) => {
 	Person.find({}).then((persons) => {
@@ -76,7 +81,7 @@ app.post("/api/persons", (request, response) => {
 	const missing = !body.name ? "name" : !body.phone ? "phone" : null;
 
 	if (missing) {
-		return response.status(404).json({ error: `${missing} missing` });
+		return response.status(400).json({ error: `${missing} missing` });
 	}
 
 	const person = new Person({
