@@ -1,35 +1,34 @@
-# Part 3.16 – Phonebook: Centralized Error Handling
+# Part 3.17 – Phonebook: Update operation
 
 ## Exercise goal
 
-The goal of this exercise is to refactor the application by moving all error handling logic into a dedicated **middleware**.
-This improves code maintainability and ensures a consistent response format for different types of errors across all routes.
+The goal of this exercise is to implement the **update functionality** for the phonebook. This allows users to modify the phone number of an existing contact using a HTTP `PUT` request.
 
-The main goals are:
+Key technical objectives:
 
 <ul> 
    <li>
-   Remove inline error handling from individual route handlers.
+      Integrate the <code>findByIdAndUpdate</code> method from Mongoose.
    </li> 
    <li>
-      Implement a custom <b>error handler middleware</b> to manage specific errors like <code>CastError</code> (malformed IDs) or validation errors.
+      Ensure the updated document is returned in the response.
    </li>
    <li>
-   Use the <code>next(error)</code> function to pass exceptions from promises to the centralized middleware. 
+      Maintain centralized error handling for the update route.
    </li> 
 </ul>
 
 ## Implementation Details
 
-The routes are now cleaner as they no longer need to define how to respond to an error. They simply "pass the ball" to the next middleware.
+The `PUT` route was implemented to handle updates based on the contact's ID.A crucial part of this implementation was using the `{ new: true }` parameter.
 
-## Testing with Postman
+## Testing and Verification using Postman
 
-<ul> 
-   <li>
-   <b>Postman:</b> Used Postman to trigger different error scenarios (like searching for a non-existent ID format) and verified that the server responds with the correct JSON error message and status code. 
-   </li> 
-   <li>
-      <b>Code Quality:</b> This refactor follows the "Don't Repeat Yourself" (DRY) principle, making the backend more robust and easier to scale as more models or routes are added. 
+<ul>
+   <li><b>Postman Validation:</b> Verified that sending a <code>PUT</code> request to <code>/api/persons/:id</code> with a new number correctly updates the entry in MongoDB Atlas. 
    </li>
+   <li><b>Error Handling Integration:</b> Confirmed that if an update is attempted with a malformed ID, the <b>Error Handler Middleware</b> (implemented in 3.16) correctly catches the <code>CastError</code> and returns a <code>400 Bad Request</code>. 
+   </li>
+   <li><b>Data Consistency:</b> Confirmed the frontend receives the updated JSON object immediately after the request, ensuring the UI stays in sync with the database. 
+   </li> 
 </ul>
