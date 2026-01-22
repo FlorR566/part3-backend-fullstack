@@ -1,34 +1,37 @@
-# Part 3.17 – Phonebook: Update operation
+# Part 3.18 – Phonebook: Database Integration
 
 ## Exercise goal
 
-The goal of this exercise is to implement the **update functionality** for the phonebook. This allows users to modify the phone number of an existing contact using a HTTP `PUT` request.
+The goal of this exercise is to complete the migration to MongoDB by updating the remaining endpoints. The application now fetches all data dynamically from the database, including metadata for the information page.
 
 Key technical objectives:
 
 <ul> 
    <li>
-      Integrate the <code>findByIdAndUpdate</code> method from Mongoose.
+      Update the <code>/info</code> orut to count documents directly from the database.
    </li> 
    <li>
-      Ensure the updated document is returned in the response.
+      Refactor the <code>GET /api/persons/:id</code> route to use Mongoose's <code>findByID</code>.
    </li>
    <li>
-      Maintain centralized error handling for the update route.
+      Ensure all routes use the centralized error handler for failed database operations.
    </li> 
 </ul>
 
-## Implementation Details
+## The infot route
 
-The `PUT` route was implemented to handle updates based on the contact's ID.A crucial part of this implementation was using the `{ new: true }` parameter.
+Instead of using a local array length, we use the `countDocuments()` method. This is more efficient as it performs the counting on the database side.
 
 ## Testing and Verification using Postman
 
-<ul>
-   <li><b>Postman Validation:</b> Verified that sending a <code>PUT</code> request to <code>/api/persons/:id</code> with a new number correctly updates the entry in MongoDB Atlas. 
-   </li>
-   <li><b>Error Handling Integration:</b> Confirmed that if an update is attempted with a malformed ID, the <b>Error Handler Middleware</b> (implemented in 3.16) correctly catches the <code>CastError</code> and returns a <code>400 Bad Request</code>. 
-   </li>
-   <li><b>Data Consistency:</b> Confirmed the frontend receives the updated JSON object immediately after the request, ensuring the UI stays in sync with the database. 
+<ul> 
+   <li>
+      <b>Dynamic Counting:</b> Verified via <code>/info</code> that the number of people displayed updates automatically when a new person is added or deleted from MongoDB Atlas. 
+   </li> 
+   <li>
+      <b>Specific Resource Retrieval:</b> Confirmed that <code>GET /api/persons/:id</code> correctly retrieves a single contact from the database and returns a <code>404</code> if the ID exists but isn't found, or <code>400</code> if the ID format is invalid. 
+   </li> 
+   <li>
+      <b>Resilience:</b> Verified that the <code>catch(error => next(error))</code> block correctly forwards database connection timeouts or query errors to the centralized middleware. 
    </li> 
 </ul>
