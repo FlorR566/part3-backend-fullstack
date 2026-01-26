@@ -1,4 +1,4 @@
-# Part 3.20 - 3.21 – Phonebook: Validation & Production Deployment
+# Part 3.20 - 3.21 – Phonebook: Validation, Production Deployment &
 
 ## Exercise goal
 
@@ -20,6 +20,21 @@ Key technical objectives:
       <code>Production Build:</code> Deploy the integrated frontend and backend to Render.
    </li> 
 </ul>
+
+## Code Quality & Linting
+
+To maintain clean and consistent code across the backend, **ESLint** was integrated using the latest **Flat Config** format.
+
+Key configurations implemented:
+
+- **Style Enforcement:** Used `@stylistic/eslint-plugin-js` to ensure 2-space indentation, single quotes, and no semicolons.
+- **Error Prevention:** Enforced strict equality (`===`) and identified unused variables.
+- **Build Integration:** The linting process is mandatory before deployment to ensure no stylistic errors reach production.
+
+Commands:
+
+- `npm run lint`: Runs the linter to check for style issues.
+- `npx eslint . --fix`: Automatically fixes most stylistic inconsistencies (indentation, quotes, etc.).
 
 ## Deployment & Verification
 
