@@ -108,9 +108,16 @@ app.put("/api/persons/:id", (request, response, next) => {
 		{ new: true, runValidators: true, context: "query" },
 	)
 		.then((updatedPerson) => {
-			response.json(updatedPerson);
+			if (updatedPerson) {
+				response.json(updatedPerson);
+			} else {
+				// Si no existe devolvemos 404 explícito
+				response
+					.status(404)
+					.send({ error: "This person has already been deleted" });
+			}
 		})
-		.catch((error) => next(error));
+		.catch((error) => next(error)); // errores de validación (400)
 });
 
 app.delete("/api/persons/:id", (request, response, next) => {
