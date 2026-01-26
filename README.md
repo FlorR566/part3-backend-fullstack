@@ -1,37 +1,19 @@
-# Part 3.18 – Phonebook: Database Integration
+# Part 3.20 – Phonebook: Custom Validation
 
 ## Exercise goal
 
-The goal of this exercise is to complete the migration to MongoDB by updating the remaining endpoints. The application now fetches all data dynamically from the database, including metadata for the information page.
+The goal of this exercise is to implement complex validation rules for phone numbers. Since standard Mongoose validators (like `minLength`) aren't enough to check for specific formats (like the presence of a hyphen), we implement a **custom validator**.
 
 Key technical objectives:
 
 <ul> 
    <li>
-      Update the <code>/info</code> orut to count documents directly from the database.
+      Ensure phone numbers have a minimum length of 8 characters.
    </li> 
    <li>
-      Refactor the <code>GET /api/persons/:id</code> route to use Mongoose's <code>findByID</code>.
+      Validate that the phone number follows the format: <b>2 or 3 digits, a hyphen, and more digits</b> (e.g., <code>09-1234556</code> or <code>040-223344</code>).
    </li>
    <li>
-      Ensure all routes use the centralized error handler for failed database operations.
-   </li> 
-</ul>
-
-## The infot route
-
-Instead of using a local array length, we use the `countDocuments()` method. This is more efficient as it performs the counting on the database side.
-
-## Testing and Verification using Postman
-
-<ul> 
-   <li>
-      <b>Dynamic Counting:</b> Verified via <code>/info</code> that the number of people displayed updates automatically when a new person is added or deleted from MongoDB Atlas. 
-   </li> 
-   <li>
-      <b>Specific Resource Retrieval:</b> Confirmed that <code>GET /api/persons/:id</code> correctly retrieves a single contact from the database and returns a <code>404</code> if the ID exists but isn't found, or <code>400</code> if the ID format is invalid. 
-   </li> 
-   <li>
-      <b>Resilience:</b> Verified that the <code>catch(error => next(error))</code> block correctly forwards database connection timeouts or query errors to the centralized middleware. 
+      Return a clear, user-friendly error message when validation fails.
    </li> 
 </ul>
