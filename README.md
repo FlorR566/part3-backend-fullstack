@@ -1,4 +1,4 @@
-# Part 3.20 - 3.21 – Phonebook: Validation, Production Deployment &
+# Part 3.20 - 3.21 - 3.22 – Phonebook: Validation, Production Deployment & Linting
 
 ## Exercise goal
 
