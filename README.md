@@ -1,8 +1,8 @@
-# Part 3.20 – Phonebook: Custom Validation
+# Part 3.20 - 3.21 – Phonebook: Validation & Production Deployment
 
 ## Exercise goal
 
-The goal of this exercise is to implement complex validation rules for phone numbers. Since standard Mongoose validators (like `minLength`) aren't enough to check for specific formats (like the presence of a hyphen), we implement a **custom validator**.
+The goal of these exercises is to finalize the application by enforcing strict data validation and ensuring the entire Full Stack project is accessible in a production environment (Render).
 
 Key technical objectives:
 
@@ -11,9 +11,33 @@ Key technical objectives:
       Ensure phone numbers have a minimum length of 8 characters.
    </li> 
    <li>
-      Validate that the phone number follows the format: <b>2 or 3 digits, a hyphen, and more digits</b> (e.g., <code>09-1234556</code> or <code>040-223344</code>).
+      <code>Custom Phone Validation:</code> Implement a regex-based validator for complex phone number formats. Validate that the phone number follows the format: <b>2 or 3 digits, a hyphen, and more digits</b> (e.g., <code>09-1234556</code> or <code>040-223344</code>).
    </li>
    <li>
-      Return a clear, user-friendly error message when validation fails.
+      <code>Frontend Error Handling:</code> Update the UI to display specific error messages returned by Mongoose validations.
    </li> 
+   <li>
+      <code>Production Build:</code> Deploy the integrated frontend and backend to Render.
+   </li> 
+</ul>
+
+## Deployment & Verification
+
+Production URL: https://part3-phonebook-backend-hle2.onrender.com/
+
+<ul> 
+   <li>
+     Integrated Build: The frontend was built and copied to the backend's <code>dist</code> folder to serve both from a single origin.
+   </li> 
+   <li>
+      Validation Testing: 
+   </li>
+      <ul> 
+         <li>
+            Success: Numbers like <code>09-1234556</code> are saved correctly.
+         </li>
+         <li>
+            Failure: Numbers like <code>123456</code> or <code>1-223344</code> trigger a <code>400 Bad Request</code> and show an alert in the UI.
+         </li> 
+      </ul>
 </ul>
