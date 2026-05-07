@@ -1,4 +1,4 @@
-# Full Stack Open — Parte 4 (Backend Avanzado)
+# Full Stack Open — Parte 4.1 (Backend Avanzado)
 
 ### _Estructura de la aplicación, pruebas de Node.js y administración de usuarios_
 
@@ -87,7 +87,7 @@ Clonar este repositorio:
 Entrar a la carpeta:
 
 ```bash
-   cd part4/bloglist-backend
+   cd part4/bloglist
 ```
 
 Instalar dependencias:
